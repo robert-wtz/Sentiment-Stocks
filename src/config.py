@@ -14,5 +14,9 @@ TICKERS = [
 
 # History window for prices. Text history will be much shorter (APIs cap how far
 # back you can pull), which is itself a real-world data limitation to reckon with.
-PRICE_START = "2023-01-01"
+PRICE_START = "2022-01-01"
 PRICE_END = None  # None = today
+
+# Forward-return windows (trading days) used as prediction targets.
+# 20 ≈ 1 month, 60 ≈ 3 months. The pipeline trains one model per horizon.
+HORIZONS = [20, 60]
