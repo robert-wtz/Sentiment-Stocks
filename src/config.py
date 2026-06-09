@@ -6,7 +6,11 @@ RAW = ROOT / "data" / "raw"
 PROCESSED = ROOT / "data" / "processed"
 
 # Start small. More tickers = more text to collect = slower iteration.
-TICKERS = ["AAPL", "TSLA", "NVDA", "AMD", "SPY"]
+TICKERS = [
+    "AAPL", "TSLA", "NVDA", "AMD", "SPY",
+    "NOW", "MU", "MRVL", "TE", "MELI",
+    "ALAB", "MSTR", "BTC-USD", "SOL-USD",
+]
 
 # History window for prices. Text history will be much shorter (APIs cap how far
 # back you can pull), which is itself a real-world data limitation to reckon with.

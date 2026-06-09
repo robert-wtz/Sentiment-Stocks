@@ -23,6 +23,9 @@ load_dotenv()
 TOKEN = os.getenv("STOCKTWITS_TOKEN", "").strip()
 BASE = "https://api.stocktwits.com/api/2/streams/symbol/{symbol}.json"
 
+# yfinance uses BTC-USD / SOL-USD; StockTwits uses BTCUSD / SOLUSD
+_STOCKTWITS_SYMBOL = {t: t.replace("-", "") for t in TICKERS if "-" in t}
+
 
 def fetch_messages(symbol: str, max_id: int | None = None) -> list[dict]:
     """Return a list of normalized message dicts for one ticker (one page).
@@ -30,16 +33,17 @@ def fetch_messages(symbol: str, max_id: int | None = None) -> list[dict]:
     Normalized schema: id, ticker, created_at (UTC), body, source.
     Keeping this schema stable is what makes the source swappable.
     """
+    st_symbol = _STOCKTWITS_SYMBOL.get(symbol, symbol)  # e.g. BTC-USD -> BTCUSD
     params = {}
     if max_id:
         params["max"] = max_id
     if TOKEN:
         params["access_token"] = TOKEN
 
-    resp = requests.get(BASE.format(symbol=symbol), params=params, timeout=20)
+    resp = requests.get(BASE.format(symbol=st_symbol), params=params, timeout=20)
     if resp.status_code != 200:
         raise RuntimeError(
-            f"StockTwits returned {resp.status_code} for {symbol}. "
+            f"StockTwits returned {resp.status_code} for {st_symbol}. "
             f"If 401/403, your access likely needs an approved token. "
             f"If 429, you are rate-limited — back off. Body: {resp.text[:200]}"
         )
@@ -49,7 +53,7 @@ def fetch_messages(symbol: str, max_id: int | None = None) -> list[dict]:
         out.append(
             {
                 "id": m["id"],
-                "ticker": symbol,
+                "ticker": symbol,  # store as yfinance symbol for consistent joins
                 "created_at": pd.to_datetime(m["created_at"], utc=True),
                 "body": m["body"],
                 "source": "stocktwits",
