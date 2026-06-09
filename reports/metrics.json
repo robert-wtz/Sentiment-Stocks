@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-06-09T18:49:31.033343+00:00",
+  "rows": 994,
+  "tickers": [
+    "AAPL",
+    "TSLA"
+  ],
+  "cv_accuracy": 0.6194,
+  "cv_baseline": 0.5273,
+  "cv_auc": 0.6463,
+  "edge": 0.0921
+}
