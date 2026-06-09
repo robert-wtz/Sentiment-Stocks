@@ -52,12 +52,12 @@ jobs:
       - name: Determine run mode
         id: mode
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "mode=planted" >> "$GITHUB_OUTPUT"
-          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "mode=${{ github.event.inputs.mode }}" >> "$GITHUB_OUTPUT"
-          else
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
             echo "mode=live" >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=planted" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Run pipeline
