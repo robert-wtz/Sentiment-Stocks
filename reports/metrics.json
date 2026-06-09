@@ -1,12 +1,26 @@
 {
-  "generated_at": "2026-06-09T20:11:36.083640+00:00",
-  "rows": 994,
+  "generated_at": "2026-06-09T20:21:02.006713+00:00",
+  "rows": 940,
   "tickers": [
     "AAPL",
     "TSLA"
   ],
-  "cv_accuracy": 0.6194,
-  "cv_baseline": 0.5273,
-  "cv_auc": 0.6463,
-  "edge": 0.0921
+  "horizons": {
+    "20d": {
+      "cv_accuracy": 0.6577,
+      "cv_baseline": 0.7476,
+      "cv_auc": 0.3955,
+      "edge": -0.0899
+    },
+    "60d": {
+      "cv_accuracy": 0.7782,
+      "cv_baseline": 0.8251,
+      "cv_auc": 0.6213,
+      "edge": -0.0469
+    }
+  },
+  "cv_accuracy": 0.6577,
+  "cv_baseline": 0.7476,
+  "cv_auc": 0.3955,
+  "edge": -0.0899
 }
