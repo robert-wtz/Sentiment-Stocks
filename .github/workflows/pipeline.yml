@@ -62,13 +62,13 @@ jobs:
 
       - name: Run pipeline
         env:
-          USE_SYNTHETIC: ${{ steps.mode.outputs.mode == 'live' && '' || steps.mode.outputs.mode }}
+          USE_SYNTHETIC: ${{ steps.mode.outputs.mode != 'live' && steps.mode.outputs.mode || '' }}
           STOCKTWITS_TOKEN: ${{ secrets.STOCKTWITS_TOKEN }}
         run: python -m scripts.run_pipeline
 
       - name: Write job summary
         run: |
-          python - <<'EOF'
+          python - >> "$GITHUB_STEP_SUMMARY" <<'EOF'
           import json, pathlib
           m = json.loads(pathlib.Path("reports/metrics.json").read_text())
           edge = m["edge"]
@@ -83,7 +83,6 @@ jobs:
           print(f"| Rows        | {m['rows']:,} |")
           print(f"| Tickers     | {', '.join(m['tickers'])} |")
           EOF
-        >> $GITHUB_STEP_SUMMARY
 
       - name: Commit artifacts back to repo
         if: github.event_name != 'pull_request'
